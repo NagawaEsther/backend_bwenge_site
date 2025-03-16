@@ -35,8 +35,14 @@ def update_subscription(id):
     db.session.commit()
     return jsonify({'message': 'Subscription updated successfully', 'subscription': {'id': subscription.id, 'email': subscription.email}}), 200
 
+# Get a specific subscription
+@subscribe_bp.route('/get/<int:id>', methods=['GET'])
+def get_subscription(id):
+    subscription = Subscribe.query.get_or_404(id)
+    return jsonify({'id': subscription.id, 'email': subscription.email, 'subscribed_at': subscription.subscribed_at}), 200
+
 # Delete a subscription
-@subscribe_bp.route('/delete<int:id>', methods=['DELETE'])
+@subscribe_bp.route('/delete/<int:id>', methods=['DELETE'])
 def delete_subscription(id):
     subscription = Subscribe.query.get_or_404(id)
     db.session.delete(subscription)
