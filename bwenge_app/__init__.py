@@ -22,6 +22,7 @@ def create_app():
     app = Flask(__name__)
     CORS(app)
     app.config.from_object('config.Config')
+    app.config['UPLOAD_FOLDER'] = 'static/uploads'  # Match the UPLOAD_FOLDER in the controller
 
     # Initialize database
     db.init_app(app)
