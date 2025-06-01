@@ -48,3 +48,14 @@ def delete_subscription(id):
     db.session.delete(subscription)
     db.session.commit()
     return jsonify({'message': 'Subscription deleted successfully'}), 200
+
+
+
+# Route to get the count of all subscriptions (Public access)
+@subscribe_bp.route('/count', methods=['GET'])
+def get_subscriptions_count():
+    try:
+        count = Subscribe.query.count()
+        return jsonify({"count": count}), 200
+    except Exception as e:
+        return jsonify({"error": "Error fetching subscriptions count", "details": str(e)}), 500

@@ -160,3 +160,13 @@ def delete_news(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error occurred", "details": str(e)}), 500
+    
+    
+    # Route to get the count of news articles (Public access)
+@news_bp.route('/count', methods=['GET'])
+def get_news_count():
+    try:
+        count = News.query.count()
+        return jsonify({"count": count}), 200
+    except Exception as e:
+        return jsonify({"error": "Error fetching news count", "details": str(e)}), 500

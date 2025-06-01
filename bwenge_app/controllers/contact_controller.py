@@ -53,3 +53,14 @@ def delete_contact(id):
     db.session.delete(contact)
     db.session.commit()
     return jsonify({'message': 'Contact message deleted'}), 200
+
+
+
+# Route to get the count of all contact inquiries (Admin access)
+@contact_bp.route('/count', methods=['GET'])
+def get_contacts_count():
+    try:
+        count = Contact.query.count()
+        return jsonify({"count": count}), 200
+    except Exception as e:
+        return jsonify({"error": "Error fetching contacts count", "details": str(e)}), 500

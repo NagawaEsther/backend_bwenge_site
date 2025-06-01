@@ -169,3 +169,20 @@ def delete_advert(id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": "Error occurred", "details": str(e)}), 500
+    
+    
+    
+    
+    
+    # Route to get the count of all adverts (Public access)
+@adverts_bp.route('/count', methods=['GET'])
+def get_adverts_count():
+    try:
+        count = Advert.query.count()
+        return jsonify({"count": count}), 200
+    except Exception as e:
+        return jsonify({"error": "Error fetching adverts count", "details": str(e)}), 500
+    
+    
+    # $env:FLASK_APP="bwenge_app"
+# $env:FLASK_DEBUG = "1" 
