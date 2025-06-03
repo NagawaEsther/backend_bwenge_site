@@ -17,6 +17,7 @@ from bwenge_app.controllers.adverts_controller import adverts_bp
 from bwenge_app.controllers.contact_controller import contact_bp
 from bwenge_app.controllers.news_controller import news_bp
 from bwenge_app.controllers.subscriptions_controller import subscribe_bp
+from bwenge_app.controllers.application_controller import application_bp
 
 def create_app():
     app = Flask(__name__)
@@ -56,6 +57,8 @@ def create_app():
     app.register_blueprint(contact_bp,url_prefix='/api/v1/contact')
     app.register_blueprint(news_bp,url_prefix='/api/v1/news')
     app.register_blueprint(subscribe_bp,url_prefix='/api/v1/subscribe')
+    app.register_blueprint(application_bp,url_prefix='/api/v1/application')
+
 
 
     # Serve Swagger JSON file
