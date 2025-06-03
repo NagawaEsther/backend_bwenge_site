@@ -11,7 +11,7 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/api/v1/auth')
 def create_admin():
     # Call the create_admin method from the Admin model to handle admin creation
     Admin.create_admin()  # This method handles checking and creating the admin if needed
-
+    
     return jsonify({"message": "Admin account created successfully."}), 201
 
 # Route to authenticate admin login
@@ -20,18 +20,31 @@ def login():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-
+    
+    # Validate required fields
+    if not username or not password:
+        return jsonify({"message": "Username and password are required."}), 400
+    
     # Fetch the admin record by username
     admin = Admin.query.filter_by(username=username).first()
-
+    
     # Check if admin exists and if password matches the hash
     if admin and admin.check_password(password):
-        # Generate JWT token
-        access_token = create_access_token(identity=admin.id)  # You can use the admin ID or any identifier
+        # Generate JWT token with additional claims
+        additional_claims = {
+            "username": admin.username,
+            "is_admin": True
+        }
+        access_token = create_access_token(
+            identity=admin.id, 
+            additional_claims=additional_claims
+        )
         
         return jsonify({
             "message": "Login successful.",
-            "access_token": access_token
+            "access_token": access_token,
+            "username": admin.username,
+            "is_admin": True
         }), 200
     else:
         return jsonify({"message": "Invalid username or password."}), 401
